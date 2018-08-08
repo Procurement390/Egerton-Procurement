@@ -52,6 +52,7 @@
                         <td> ${tenders.getStatus()}</td>
                         <td><form action="tenderApplication" method="POST">
                                 <input type="hidden" name="count" value="${tenders.getCount()}">
+                                <input type="hidden" name="reqId" value="${tenders.getTenderNumber()}">
                                 <input type="submit" value="Apply"> 
                             </form>
                         </td>

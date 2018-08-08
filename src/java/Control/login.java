@@ -1,6 +1,7 @@
 package Control;
 
 import Business.COD;
+import Business.Supplier;
 import java.io.*;
 import java.sql.*;
 import java.util.logging.*;
@@ -30,6 +31,7 @@ public class login extends HttpServlet {
 
         User user = new User();
         COD cod = new COD();
+        Supplier supplier = new Supplier();
 
         PrintWriter out = response.getWriter();
 
@@ -63,31 +65,47 @@ public class login extends HttpServlet {
             HttpSession session = request.getSession();
             session.setAttribute("user", user);
 
-            if (user.getRole().equals("Supplier") || user.getRole().equals("DCPO")) {
+            if(user.getRole().equals("DCPO")) {
                 url = "/tender";
-            }
-            else
-            {
-                query = "select * from cod where username = ?";
-                
+            } else if (user.getRole().equals("Supplier")) {
+
+                query = "select * from supplier where username = ?";
+
                 ps = connection.prepareStatement(query);
                 ps.setString(1, username);
                 rs = ps.executeQuery();
-                
+
                 while(rs.next()){
+                    
+                    supplier.setCompanyName(rs.getString("companyname"));
+                    supplier.setBusinessPermit(rs.getString("businesspermit"));
+                    supplier.setKraCertificate(rs.getString("kracertificate"));
+                    supplier.setTaxCompliance(rs.getString("taxcompliance"));
+                }
                 
+                session.setAttribute("supplier", supplier);
+                
+                url = "/tender";
+            } else {
+                query = "select * from cod where username = ?";
+
+                ps = connection.prepareStatement(query);
+                ps.setString(1, username);
+                rs = ps.executeQuery();
+
+                while (rs.next()) {
+
                     cod.setFaculty(rs.getString("faculty"));
                     cod.setDepartment(rs.getString("department"));
                 }
-                    
-                
+
                 cod.setName(user.getName());
                 cod.setUsername(user.getUsername());
                 cod.setPassword(user.getPassword());
                 cod.setRole(user.getRole());
-                
+
                 session.setAttribute("cod", cod);
-                
+
                 url = "/CODHomepage.jsp";
             }
             request.setAttribute("message", message);

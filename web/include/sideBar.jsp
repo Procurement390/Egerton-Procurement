@@ -2,7 +2,7 @@
 <div id="sideBar">
     <section id="label">
         <h1> Supplier Dashboard </h1>
-        <h2> Profile </h2>
+        <h2> <a href="SupplierProfile.jsp"> Profile </a> </h2>
         <p class="text-left"><span class="label label-default">Name: ${user.getName()}</span></p>
     </section>
     <section id="link">

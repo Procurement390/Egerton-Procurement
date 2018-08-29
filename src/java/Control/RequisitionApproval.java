@@ -21,10 +21,9 @@ import javax.sql.DataSource;
 
 public class RequisitionApproval extends HttpServlet {
 
-    @Resource(name="jdbc/Procurement")
-     private DataSource datasource;
- 
-    
+    @Resource(name = "jdbc/Procurement")
+    private DataSource datasource;
+
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
@@ -40,70 +39,62 @@ public class RequisitionApproval extends HttpServlet {
 
         //print writer
         PrintWriter out = response.getWriter();
-        
+
         String reqId = request.getParameter("reqId");
-        Items item = new Items();
-        
+
         ArrayList<Items> items = new ArrayList<>();
-        
-        String message = "";
+
         String url = "";
-     
+
         Connection connection = null;
         PreparedStatement ps = null;
         ResultSet rs = null;
-        
+
         String query = "select * from items where reqid = ?";
-        
-        try
-        {
+
+        try {
             connection = datasource.getConnection();
-            
-                       
+
             ps = connection.prepareStatement(query);
             ps.setString(1, reqId);
-                    
+
             rs = ps.executeQuery();
-                        
-            while(rs.next())
-            {
-             item.setItem(rs.getString("item"));
-             item.setDescription(rs.getString("description"));
-             item.setQuantity(rs.getInt("quantity"));
+
+            while (rs.next()) {
+
+                Items item = new Items();
+                
+                item.setItem(rs.getString("item"));
+                item.setDescription(rs.getString("description"));
+                item.setQuantity(rs.getInt("quantity"));
+
+                items.add(item);
             }
-            
-            items.add(item);
-            
+
             HttpSession session = request.getSession();
             session.setAttribute("items", items);
             session.setAttribute("reqId", reqId);
-            
-            request.setAttribute("message", message);
-        
+
             url = "/RequisitionApproval.jsp";
-            
+
             RequestDispatcher dispatcher = getServletContext().getRequestDispatcher(url);
             dispatcher.forward(request, response);
-                
-           
-            
+
         } catch (SQLException ex) {
             Logger.getLogger(Registration.class.getName()).log(Level.SEVERE, null, ex);
             out.print("Connection to the database failed. please try again");
-        }
-        finally
-        {
-            
+        } finally {
+
             out.close();
             try {
                 connection.close();
                 ps.close();
                 rs.close();
-                
+
             } catch (SQLException ex) {
                 Logger.getLogger(Registration.class.getName()).log(Level.SEVERE, null, ex);
             }
-        
+
         }
     }
 

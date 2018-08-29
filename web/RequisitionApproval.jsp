@@ -22,15 +22,9 @@
 
 <div class="container" id="mainbody">
 
-    <h1> Create Requisition </h1>
+    <h3 style="text-align:center;"> Requisition items <br> for <br> requisition number ${reqId} </h3>
 
-    <c:if test="${CTMsg != null}">
-        <script>
-            alert('${CTMsg}');
-        </script>
-    </c:if>
-
-        <form action="ApproveRequisition" method="POST">
+    <form action="ApproveRequisition" method="POST">
         <div class="table-responsive">
             <table class="table">
                 <thead>
@@ -61,10 +55,34 @@
 
             <br><br>
             <div class="text-center">
-                <a class="btn btn-danger pull-left" style=" margin-left: 20px;" href="RejectRequisition?reqId=${reqId}"> Reject Requisition </a>
-                <a class="btn btn-success pull-right" style="margin-right: 20px;" href="ApproveRequisition?reqId=${reqId}"> Approve Requisition </a>
+                <a class="btn btn-danger pull-left" style=" margin-left: 20px;" onClick="rejectRequisition()"> Reject Requisition </a>
+                <a class="btn btn-success pull-right" style="margin-right: 20px;" onClick="acceptRequisition()"> Approve Requisition </a>
             </div>
     </form>
+
+    <script>
+        function rejectRequisition() {
+            var conf = confirm("Do you want to reject this requisition?");
+
+            if (conf === false) {
+                preventDefault();
+            } else {
+                window.location.href="RejectRequisition?reqId=${reqId}";
+            }
+
+        }
+        
+         function acceptRequisition() {
+            var conf = confirm("Do you want to accept this requisition?");
+
+            if (conf === false) {
+                preventDefault();
+            } else {
+                window.location.href="ApproveRequisition?reqId=${reqId}"
+            }
+
+        }
+    </script>
 
 </div>
 

@@ -1,7 +1,9 @@
 package Business;
 
+import java.io.Serializable;
 
-public class Items {
+
+public class Items implements Serializable{
 
 private int id;
 private String item;

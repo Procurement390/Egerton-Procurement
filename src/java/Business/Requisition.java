@@ -1,7 +1,9 @@
 package Business;
 
+import java.io.Serializable;
 
-public class Requisition {
+
+public class Requisition implements Serializable{
 
 private String id;
 private String department;

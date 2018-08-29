@@ -8,24 +8,16 @@ public class Bid implements Serializable{
     private int Id;
     private String tenderNumber;
     private int amount;
-    private String companyname;
     private String username;
     private String status;
 
     public Bid() {
     }
 
-    public Bid(String tenderNumber, int amount, String username,String status) {
-        this.tenderNumber = tenderNumber;
-        this.amount = amount;
-        this.username = username;
-        this.status = status;
-    }
 
-    public Bid(int Id, String tenderNumber, String companyname, int amount, String status) {
+    public Bid(int Id, String username, int amount, String status) {
         this.Id = Id;
-        this.tenderNumber = tenderNumber;
-        this.companyname = companyname;
+        this.username = username;
         this.amount = amount;
         this.status = status;
     }
@@ -38,14 +30,7 @@ public class Bid implements Serializable{
         this.Id = Id;
     }
 
-    public String getCompanyname() {
-        return companyname;
-    }
-
-    public void setCompanyname(String companyname) {
-        this.companyname = companyname;
-    }
-
+  
     
     public String getStatus() {
         return status;

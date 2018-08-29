@@ -1,6 +1,7 @@
 package Control;
 
 import Business.COD;
+import Business.Requisition;
 import Business.Supplier;
 import java.io.*;
 import java.sql.*;
@@ -8,6 +9,7 @@ import java.util.logging.*;
 import javax.servlet.*;
 import javax.servlet.http.*;
 import Business.User;
+import java.util.ArrayList;
 import javax.annotation.Resource;
 import javax.servlet.RequestDispatcher;
 import javax.servlet.http.HttpSession;
@@ -55,59 +57,64 @@ public class login extends HttpServlet {
 
             rs = ps.executeQuery();
 
-            while (rs.next()) {
+            if (rs.next()) {
                 user.setName(rs.getString("name"));
                 user.setUsername(rs.getString("username"));
                 user.setPassword(rs.getString("password"));
                 user.setRole(rs.getString("role"));
+            } else {
+                url = "/login.jsp";
+
+                String errorMessage = "A user with the username or password entered does not exist";
+
+                request.setAttribute("errorMessage", errorMessage);
+
+                RequestDispatcher dispatcher = getServletContext().getRequestDispatcher(url);
+                dispatcher.forward(request, response);
             }
 
             HttpSession session = request.getSession();
             session.setAttribute("user", user);
 
-            if(user.getRole().equals("DCPO")) {
-                url = "/tender";
-            } else if (user.getRole().equals("Supplier")) {
+            switch (user.getRole()) {
+                case "DCPO":
+                    url = "/tender";
+                    break;
+                case "Supplier":
+                    query = "select * from supplier where username = ?";
+                    ps = connection.prepareStatement(query);
+                    ps.setString(1, username);
+                    rs = ps.executeQuery();
+                    while (rs.next()) {
 
-                query = "select * from supplier where username = ?";
-
-                ps = connection.prepareStatement(query);
-                ps.setString(1, username);
-                rs = ps.executeQuery();
-
-                while(rs.next()){
+                        supplier.setCompanyName(rs.getString("companyname"));
+                        supplier.setBusinessPermit(rs.getString("businesspermit"));
+                        supplier.setKraCertificate(rs.getString("kracertificate"));
+                        supplier.setTaxCompliance(rs.getString("taxcompliance"));
+                    }
                     
-                    supplier.setCompanyName(rs.getString("companyname"));
-                    supplier.setBusinessPermit(rs.getString("businesspermit"));
-                    supplier.setKraCertificate(rs.getString("kracertificate"));
-                    supplier.setTaxCompliance(rs.getString("taxcompliance"));
-                }
-                
-                session.setAttribute("supplier", supplier);
-                
-                url = "/tender";
-            } else {
-                query = "select * from cod where username = ?";
+                    session.setAttribute("supplier", supplier);
+                    url = "/tender";
+                    break;
+                case "COD":
+                    query = "select * from cod where username = ?";
+                    ps = connection.prepareStatement(query);
+                    ps.setString(1, username);
+                    rs = ps.executeQuery();
+                    while (rs.next()) {
 
-                ps = connection.prepareStatement(query);
-                ps.setString(1, username);
-                rs = ps.executeQuery();
-
-                while (rs.next()) {
-
-                    cod.setFaculty(rs.getString("faculty"));
-                    cod.setDepartment(rs.getString("department"));
-                }
-
-                cod.setName(user.getName());
-                cod.setUsername(user.getUsername());
-                cod.setPassword(user.getPassword());
-                cod.setRole(user.getRole());
-
-                session.setAttribute("cod", cod);
-
-                url = "/CODHomepage.jsp";
+                        cod.setFaculty(rs.getString("faculty"));
+                        cod.setDepartment(rs.getString("department"));
+                    }
+                    cod.setName(user.getName());
+                    cod.setUsername(user.getUsername());
+                    cod.setPassword(user.getPassword());
+                    cod.setRole(user.getRole());
+                    session.setAttribute("cod", cod);
+                    url = "/CODHomepage.jsp";
+                    break;
             }
+
             request.setAttribute("message", message);
 
             RequestDispatcher dispatcher = getServletContext().getRequestDispatcher(url);
@@ -118,4 +125,5 @@ public class login extends HttpServlet {
         }
 
     }
+
 }

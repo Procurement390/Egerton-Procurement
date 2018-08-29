@@ -69,9 +69,22 @@
         <form action="Apply" method="POST">
             <label><strong> Bid Amount: </strong></label>
             <input type="text" name="amount">
-            <input type="submit" value="Apply">
+            <input type="button" value="Apply" onclick="apply(this.form)">
         </form>
 
+        <script>
+
+        function apply(form) {
+            var conf = confirm("Do you wish to apply for this tender?");
+
+            if (conf === false) {
+                preventDefault();
+            } else {
+                form.submit();
+            }
+
+        }
+    </script>
 
     </div>
 

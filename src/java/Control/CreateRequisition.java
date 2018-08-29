@@ -52,61 +52,65 @@ public class CreateRequisition extends HttpServlet {
         PreparedStatement ps = null;
         ResultSet rs = null;
         String number = getRequisitionNumber();
+        String url = "";
+        String message;
 
-        String query = "insert into requisition(id,department,faculty,username,status) values(?,?,?,?,?)";
+        if (cod.getDepartment().isEmpty() || cod.getFaculty().isEmpty()) {
 
-        try {
-            connection = datasource.getConnection();
-
-            ps = connection.prepareStatement(query);
-            ps.setString(1, number);
-            ps.setString(2, cod.getDepartment());
-            ps.setString(3, cod.getFaculty());
-            ps.setString(4, cod.getUsername());
-            ps.setString(5, "Pending");
-                
-            ps.executeUpdate();
-
-            for (int i = 0; i < items.size(); i++) {
-                items.get(i);
-
-                query = "insert into items(item,description,quantity,reqid) values(?,?,?,?)";
-
-                ps = connection.prepareStatement(query);
-                ps.setString(1, items.get(i).getItem());
-                ps.setString(2, items.get(i).getDescription());
-                ps.setInt(3, items.get(i).getQuantity());
-                ps.setString(4, number);
-
-                ps.executeUpdate();
-            }
-
-            String message = "You have submitted your requisition successfully";
-
-            request.setAttribute("message", message);
-
-            String url = "/CODHomepage.jsp";
+            message = "You must update your profile before submitting a requisition";
+            url = "Profile.jsp";
 
             RequestDispatcher dispatcher = getServletContext().getRequestDispatcher(url);
             dispatcher.forward(request, response);
+        } else {
 
-        } catch (SQLException ex) {
-            Logger.getLogger(Registration.class.getName()).log(Level.SEVERE, null, ex);
-            out.print("Connection to the database failed. please try again");
-        } finally {
+            String query = "insert into requisition(id,department,faculty,username,status) values(?,?,?,?,?)";
 
-            out.close();
             try {
-                connection.close();
-                ps.close();
-                rs.close();
+                connection = datasource.getConnection();
+
+                ps = connection.prepareStatement(query);
+                ps.setString(1, number);
+                ps.setString(2, cod.getDepartment());
+                ps.setString(3, cod.getFaculty());
+                ps.setString(4, cod.getUsername());
+                ps.setString(5, "Pending");
+
+                ps.executeUpdate();
+
+                for (int i = 0; i < items.size(); i++) {
+                    items.get(i);
+
+                    query = "insert into items(item,description,quantity,reqid) values(?,?,?,?)";
+
+                    ps = connection.prepareStatement(query);
+                    ps.setString(1, items.get(i).getItem());
+                    ps.setString(2, items.get(i).getDescription());
+                    ps.setInt(3, items.get(i).getQuantity());
+                    ps.setString(4, number);
+
+                    ps.executeUpdate();
+                }
+
+                message = "You have submitted your requisition successfully";
+
+                request.setAttribute("message", message);
+
+                url = "/CODHomepage.jsp";
+
+                RequestDispatcher dispatcher = getServletContext().getRequestDispatcher(url);
+                dispatcher.forward(request, response);
 
             } catch (SQLException ex) {
                 Logger.getLogger(Registration.class.getName()).log(Level.SEVERE, null, ex);
+                out.print("Connection to the database failed. please try again");
+            } finally {
+
+                out.close();
+
             }
 
         }
-
     }
 
     public String getRequisitionNumber() {

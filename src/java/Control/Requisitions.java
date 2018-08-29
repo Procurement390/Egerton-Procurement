@@ -42,7 +42,6 @@ public class Requisitions extends HttpServlet {
         PrintWriter out = response.getWriter();
         
         ArrayList<Requisition> req = new ArrayList<>();
-        Requisition requisition = new Requisition();
 
                 
         String message = "";
@@ -66,6 +65,8 @@ public class Requisitions extends HttpServlet {
            
             while(rs.next())
             {
+                Requisition requisition = new Requisition();
+                
                 requisition.setId(rs.getString("id"));
                 requisition.setUsername(rs.getString("username"));
                 requisition.setFaculty(rs.getString("faculty"));

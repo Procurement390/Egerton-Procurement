@@ -25,17 +25,15 @@ public class TenderApplicants extends HttpServlet {
         
             response.setContentType("text/html; charset=UTF-8");
             
-            Bid bid;
+            PrintWriter out = response.getWriter();
+   
             
             String tenderNumber = request.getParameter("tender");
             
             ArrayList<Bid> bids = new ArrayList<>();
             
             
-            String query = "select ID, tenderNumber, amount, companyname, status  from bid inner join "
-                    + "users on bid.username = users.username where tenderNumber = ?";
-            
-            
+            String query = "select ID, tenderNumber,bid.username ,amount, status  from bid inner join users on bid.username = users.username where tenderNumber = ?";
             
             Connection connection = null;
             PreparedStatement ps = null;
@@ -52,20 +50,20 @@ public class TenderApplicants extends HttpServlet {
                
                while(rs.next()){
                     int amount  = rs.getInt("amount");
-                    
-                    String companyname = rs.getString("companyname");
 
                     int Id = rs.getInt("ID");
                     
                     String status = rs.getString("status");
                     
-                    bid = new Bid(Id, tenderNumber, companyname, amount, status);
+                    String username = rs.getString("username");
+                    
+                    Bid bid = new Bid(Id, username, amount, status);
                     
                     bids.add(bid);
                   
+                    out.println("Tender Number: " + bid.getStatus());
                }
-               
-               
+ 
                 
             } catch (SQLException ex) {
                 Logger.getLogger(TenderApplicants.class.getName()).log(Level.SEVERE, null, ex);
@@ -77,7 +75,7 @@ public class TenderApplicants extends HttpServlet {
             request.setAttribute("tenderNumber", tenderNumber);
             getServletContext().setAttribute("bids", bids);
             request.getRequestDispatcher("/tenderApplicants.jsp").forward(request, response);
-        
+       
     }
 
   

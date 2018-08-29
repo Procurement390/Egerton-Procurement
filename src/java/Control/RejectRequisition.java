@@ -60,7 +60,7 @@ public class RejectRequisition extends HttpServlet {
                     
             ps.executeUpdate();
                         
-            HttpSession session = request.getSession();
+            message = "Requisition rejected";
             
             request.setAttribute("message", message);
         

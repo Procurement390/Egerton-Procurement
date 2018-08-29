@@ -17,10 +17,14 @@
     }
 </style>
 
-<c:choose>
-    <c:when test="${user.getRole() == COD}"> <c:import url="/include/sideBar3.jsp" /> </c:when>
-    <c:otherwise> <c:import url="/include/sideBar2.jsp" /> </c:otherwise>
-</c:choose>
+<c:set var="role" scope="session" value="${user.getRole()}" />
+<c:if test="${role == 'DCPO'}">
+    <c:import url="/include/sideBar2.jsp" />
+</c:if>
+
+<c:if test="${role == 'COD'}">
+    <c:import url="/include/sideBar3.jsp" />
+</c:if>    
 
 
 <div class="container" id="mainbody">
@@ -50,7 +54,7 @@
                                 <td> <a href="SuccessfulRequisitionItems?reqId=${req.getId()}"> View </a> </td>
                                 <c:set var="role" scope="session" value="${user.getRole()}" />
                                 <c:if test="${role == 'DCPO'}">
-                                    <td><a href="tenderCreation?reqId=${req.getId()}"> Publish Tender </a></td>
+                                    <td><a onClick="publishTender()"> Publish Tender </a></td>
                                 </c:if>
                             </tr>
                         </c:forEach>
@@ -59,6 +63,19 @@
             </tbody>
         </table>       
     </div>
+    <script>
+        function publishTender() {
+            var conf = confirm("Do you want to publish this requisition?");
+
+            if (conf === false) {
+                preventDefault();
+            } else {
+                window.location.href="tenderCreation?reqId=${req.getId()}";
+            }
+
+        }
+
+    </script>
 </div>
 
 <c:import url="/include/Footer.jsp" />

@@ -19,7 +19,14 @@
 
 </style>
 
-<c:import url="/include/sideBar.jsp" />
+<c:set var="role" scope="session" value="${user.getRole()}" />
+<c:if test="${role == 'DCPO'}">
+    <c:import url="/include/sideBar2.jsp" />
+</c:if>
+
+<c:if test="${role == 'Supplier'}">
+    <c:import url="/include/sideBar.jsp" />
+</c:if>  
 
 <div class="container" id="mainbody">
 

@@ -18,7 +18,15 @@
 
 <c:import url="/include/Header1.jsp"/>
 
-<c:import url="/include/sideBar3.jsp"/>
+
+<c:set var="role" scope="session" value="${user.getRole()}" />
+<c:if test="${role == 'DCPO'}">
+    <c:import url="/include/sideBar2.jsp" />
+</c:if>
+
+<c:if test="${role == 'COD'}">
+    <c:import url="/include/sideBar3.jsp" />
+</c:if>    
 
 <div class="container" id="mainbody">
 
@@ -28,6 +36,10 @@
         <script>
             alert('${CTMsg}');
         </script>
+    </c:if>
+
+    <c:if test="${not empty message}">
+        <p style="text-align:center" class="alert alert-success"> ${message} </p>
     </c:if>
 
     <form action="CreateRequisition" method="POST">
@@ -64,7 +76,7 @@
 
             <br><br>
             <div class="text-center">
-                <input type="submit" value="Submit Requisiton" class="btn btn-primary" >
+                <input type="button" value="Submit Requisiton" class="btn btn-primary" onclick="confirmRequisition(this.form)" >
             </div>
     </form>
 
@@ -84,7 +96,7 @@
                 <input type="text" placeholder="Quantity" required="" name="quantity">
             </div>
 
-            <input type="submit" value="Add" class="btn btn-success"/>
+            <input type="button" value="Add" class="btn btn-success" onclick="confirmItems(this.form)"/>
 
         </div>
     </form>
@@ -93,6 +105,28 @@
         function openPopUp() {
             $('#Adding').css('display', 'block');
             $('#Adding').dialog();
+        }
+        
+        function confirmItems(form) {
+            var conf = confirm("Do you wish to add this item?");
+
+            if (conf === false) {
+                preventDefault();
+            } else {
+                form.submit();
+            }
+
+        }
+
+        function confirmRequisition(form) {
+            var conf = confirm("Do you wish to submit this requisition?");
+
+            if (conf === false) {
+                preventDefault();
+            } else {
+                form.submit();
+            }
+
         }
     </script>
 

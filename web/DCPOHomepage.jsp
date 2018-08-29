@@ -22,7 +22,14 @@
 
 <div id="mainbody">
 
-    ${message}
+    <c:if test="${not empty message}">
+        <h3 style="text-align:center;"> ${message} </h3>
+    </c:if>
+    <c:if test="${not empty tenderMessage}">
+        <h3 style="text-align:center;"> ${tenderMessage} </h3>
+    </c:if>
+
+
     <h1> Available Tenders </h1>
 
     <div class="table-responsive">
@@ -32,7 +39,7 @@
                     <th>Tender Number</th>
                     <th>Tender Description</th>
                     <th>Closing Date</th>
-                    <th>ClosingTime </th>
+                    <th>Closing Time </th>
                     <th>Status </th>
                 </tr>
             </thead>

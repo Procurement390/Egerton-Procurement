@@ -44,8 +44,6 @@ public class ApproveRequisition extends HttpServlet {
         //print writer
         PrintWriter out = response.getWriter();
 
-        HttpSession session = request.getSession();
-
         String reqId = request.getParameter("reqId");
 
         Items item = new Items();
@@ -56,7 +54,6 @@ public class ApproveRequisition extends HttpServlet {
         Connection connection = null;
         PreparedStatement ps = null;
         ResultSet rs = null;
-        String createTenderMsg;
 
         String query = "update requisition set status = ? where id = ? ";
 
@@ -71,6 +68,9 @@ public class ApproveRequisition extends HttpServlet {
 
             ps.executeUpdate();
 
+           message = "requisition approval successful";
+           
+           request.setAttribute("message", message);
            url = "/tender";
           
             RequestDispatcher dispatcher = getServletContext().getRequestDispatcher(url);

@@ -47,6 +47,8 @@ public class SuccessfulRequisition extends HttpServlet {
         
         COD cod = (COD) session.getAttribute("cod");
         
+        String role = cod.getRole();
+        
         ArrayList<Requisition> req = new ArrayList<>();
         Requisition requisition = new Requisition();
 
@@ -78,7 +80,7 @@ public class SuccessfulRequisition extends HttpServlet {
             }
 
             session.setAttribute("requisition", req);
-
+            session.setAttribute("role", role);
             request.setAttribute("message", message);
 
             url = "/successfulRequisition.jsp";

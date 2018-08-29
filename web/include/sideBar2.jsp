@@ -13,12 +13,11 @@
 
         <a class="btn btn-default active btn-block btn" role="button" href="Requisitions"> New Requisition </a>
         <a class="btn btn-default active btn-block btn" role="button" href="AllSuccessfulRequisition"> Publish Tender</a>
-        <a class="btn btn-default active btn-block btn" role="button" href="tenderApplicants.jsp"> Tender Applicants </a>
-        <a class="btn btn-default active btn-block btn" role="button" href="activeTenders.jsp"> Active Tenders </a>
-        <a class="btn btn-default active btn-block btn" role="button" href="closedTenders.jsp"> Closed Tenders </a>
+        <a class="btn btn-default active btn-block btn" role="button" href="TenderApplicants"> Tender Applicants </a>
+        <a class="btn btn-default active btn-block btn" role="button" href="tender"> Active Tenders </a>
         <a class="btn btn-default active btn-block btn" role="button" href="AllSuccessfulRequisition"> Approved Requisition </a>
         <a class="btn btn-default active btn-block btn" role="button" href="AllFailedRequisitions"> failed Requisition </a>
-        <a class="btn btn-default active btn-block btn" role="button" href="tendersWon.jsp"> Successful Applicants </a>
+        <a class="btn btn-default active btn-block btn" role="button" href="tendersWon"> Successful Applicants </a>
         <a class="btn btn-default active btn-block btn" role="button" href="tendersRejected.jsp"> Failed Applicants </a>
 
     </section>

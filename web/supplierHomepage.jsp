@@ -7,8 +7,8 @@
 </c:if>
 
 <style>
-    
-    
+
+
     body
     {
         background:url(assets/img/procurement2.jpg) no-repeat;
@@ -20,7 +20,7 @@
         float: left;
         margin-top: 10px;
     }
-    
+
 
 </style>
 
@@ -28,7 +28,11 @@
 
 <div class="container" id="mainbody">
 
-    ${message}
+    <c:if test="${not empty message}">
+        <h3 style="text-align:center" class="alert alert-success"> ${message} </h3>
+    </c:if>
+
+
     <h1> Available Tenders </h1>
 
     <div class="table-responsive">
@@ -62,5 +66,5 @@
         </table>
     </div>
 </div>   
-   
-    <c:import url="/include/Footer.jsp" />
+
+<c:import url="/include/Footer.jsp" />

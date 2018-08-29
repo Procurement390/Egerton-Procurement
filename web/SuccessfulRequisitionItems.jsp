@@ -18,11 +18,26 @@
 
 <c:import url="/include/Header1.jsp"/>
 
-<c:import url="/include/sideBar3.jsp"/>
+<c:set var="role" scope="session" value="${user.getRole()}" />
+<c:if test="${role == 'DCPO'}">
+    <c:import url="/include/sideBar2.jsp" />
+</c:if>
+
+<c:if test="${role == 'COD'}">
+    <c:import url="/include/sideBar3.jsp" />
+</c:if>    
 
 <div class="container" id="mainbody">
 
-    <h1> Create Requisition </h1>
+    <c:set var="role" scope="session" value="${user.getRole()}" />
+    <c:if test="${role == 'DCPO'}">
+        <h1> Create Requisition </h1>
+    </c:if>
+
+    <c:if test="${role == 'COD'}">
+        <h1> Successful Requisition </h1>
+    </c:if>  
+
 
     <c:if test="${CTMsg != null}">
         <script>
@@ -30,7 +45,7 @@
         </script>
     </c:if>
 
-        <form action="ApproveRequisition" method="POST">
+    <form action="ApproveRequisition" method="POST">
         <div class="table-responsive">
             <table class="table">
                 <thead>
@@ -57,13 +72,14 @@
 
                 </tbody>
             </table>
+            <c:if test="${role == 'DCPO'}">
+                <br><br>
+                <div class="text-center">
+                    <a class="btn btn-danger pull-left" style=" margin-left: 20px;"> Reject Requisition </a>
+                    <a class="btn btn-success pull-right" style="margin-right: 20px;" href="ApproveRequisition?reqId=${reqId}"> Approve Requisition </a>
+                </div>
+            </c:if>
 
-
-            <br><br>
-            <div class="text-center">
-                <a class="btn btn-danger pull-left" style=" margin-left: 20px;"> Reject Requisition </a>
-                <a class="btn btn-success pull-right" style="margin-right: 20px;" href="ApproveRequisition?reqId=${reqId}"> Approve Requisition </a>
-            </div>
     </form>
 
 </div>

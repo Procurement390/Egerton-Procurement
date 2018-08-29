@@ -42,6 +42,9 @@ public class AddItem extends HttpServlet {
         
         session.setAttribute("items", item);
         
+        String message = request.getParameter("item") + " added to requisition list";
+        
+        request.setAttribute("message", message);
         
         RequestDispatcher dispatcher = getServletContext().getRequestDispatcher("/createRequisition.jsp");
         dispatcher.forward(request, response);

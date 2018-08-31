@@ -106,7 +106,7 @@
             $('#Adding').css('display', 'block');
             $('#Adding').dialog();
         }
-        
+
         function confirmItems(form) {
             var conf = confirm("Do you wish to add this item?");
 

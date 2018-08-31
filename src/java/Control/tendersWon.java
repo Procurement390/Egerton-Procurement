@@ -31,7 +31,7 @@ public class tendersWon extends HttpServlet {
             throws ServletException, IOException {
 
         HttpSession session = request.getSession();
-            
+
         User user = (User) session.getAttribute("user");
 
         //set content type
@@ -61,9 +61,8 @@ public class tendersWon extends HttpServlet {
             rs = ps.executeQuery(query);
 
             while (rs.next()) {
-                if ((("accepted").equals(rs.getString("status"))) && 
-                        (user.getUsername().equals(rs.getString("username"))))
-                        {
+                if ((("accepted").equals(rs.getString("status")))
+                        && (user.getUsername().equals(rs.getString("username")))) {
                     tenderApp.setTenderNumber(rs.getString("tenderNumber"));
                     tenderApp.setDescription(rs.getString("description"));
                     tenderApp.setClosingDate(rs.getString("closingdate"));
@@ -72,7 +71,7 @@ public class tendersWon extends HttpServlet {
                     tenderApp.setStatus(rs.getString("status"));
 
                     tenderW.add(tenderApp);
-                  
+
                 }
             }
 
@@ -90,7 +89,7 @@ public class tendersWon extends HttpServlet {
         }
         url = "/tendersWon.jsp";
         session.setAttribute("tenderW", tenderW);
-       
+
         RequestDispatcher dispatcher = getServletContext().getRequestDispatcher(url);
         dispatcher.forward(request, response);
     }

@@ -2,7 +2,6 @@ package Control;
 
 import Business.Items;
 import java.io.IOException;
-import java.io.PrintWriter;
 import java.util.ArrayList;
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
@@ -27,9 +26,6 @@ public class AddItem extends HttpServlet {
 
         //set content type
         response.setContentType("text/html");
-
-        //print writer
-        PrintWriter out = response.getWriter();
 
         HttpSession session = request.getSession();
         Items items = new Items();

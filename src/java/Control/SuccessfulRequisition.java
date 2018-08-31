@@ -44,11 +44,11 @@ public class SuccessfulRequisition extends HttpServlet {
         PrintWriter out = response.getWriter();
 
         HttpSession session = request.getSession();
-        
+
         COD cod = (COD) session.getAttribute("cod");
-        
+
         String role = cod.getRole();
-        
+
         ArrayList<Requisition> req = new ArrayList<>();
         Requisition requisition = new Requisition();
 

@@ -43,7 +43,7 @@
             </thead>
             <tbody>
                 <c:choose>
-                    <c:when test="${empty requisition}"> <tr><td> No item added</td> </tr> </c:when>
+                    <c:when test="${empty requisition}"> <h4 class="alert alert-info text-center"> No Successful Requisition </h4>  </c:when>
                     <c:otherwise>
                         <c:forEach var="req" items="${requisition}" >
                             <tr>

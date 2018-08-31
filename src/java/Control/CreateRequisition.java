@@ -107,6 +107,13 @@ public class CreateRequisition extends HttpServlet {
             } finally {
 
                 out.close();
+                   try {
+                ps.close();
+                rs.close();
+                connection.close();
+            } catch (SQLException ex) {
+                Logger.getLogger(AllFailedRequisitions.class.getName()).log(Level.SEVERE, null, ex);
+            }
 
             }
 

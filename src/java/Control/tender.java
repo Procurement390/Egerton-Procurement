@@ -24,65 +24,68 @@ public class tender extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        
+
         HttpSession session = request.getSession();
-        
-        if(session != null)
-        {
-          
-              String query = "select * from tenders";
+        Connection connection = null;
+        PreparedStatement ps = null;
+        ResultSet rs = null;
 
-        try {
+        if (session != null) {
 
-            Connection connection = null;
-            PreparedStatement ps = null;
-            ResultSet rs = null;
-            ArrayList<Tender> tenders = new ArrayList<Tender>();
-            connection = datasource.getConnection();
-            int count = 0;
+            String query = "select * from tenders";
 
-            PrintWriter out = response.getWriter();
+            try {
 
-            ps = connection.prepareStatement(query);
+                ArrayList<Tender> tenders = new ArrayList<Tender>();
+                connection = datasource.getConnection();
+                int count = 0;
 
-            rs = ps.executeQuery();
+                PrintWriter out = response.getWriter();
 
-            while (rs.next()) {
-                Tender Atender = new Tender();
-                Atender.setTenderNumber(rs.getString("number"));
-                Atender.setTenderDescription(rs.getString("description"));
-                Atender.setClosingDate(rs.getString("closingdate"));
-                Atender.setClosingTime(rs.getString("closingtime"));
-                Atender.setStatus(rs.getString("status"));
+                ps = connection.prepareStatement(query);
 
-                Atender.setCount(count);
-                count = count + 1;
+                rs = ps.executeQuery();
 
-                tenders.add(Atender);
+                while (rs.next()) {
+                    Tender Atender = new Tender();
+                    Atender.setTenderNumber(rs.getString("number"));
+                    Atender.setTenderDescription(rs.getString("description"));
+                    Atender.setClosingDate(rs.getString("closingdate"));
+                    Atender.setClosingTime(rs.getString("closingtime"));
+                    Atender.setStatus(rs.getString("status"));
+
+                    Atender.setCount(count);
+                    count = count + 1;
+
+                    tenders.add(Atender);
+                }
+
+                session.setAttribute("tenders", tenders);
+
+                User user = (User) session.getAttribute("user");
+
+                if (user.getRole().equals("DCPO")) {
+                    RequestDispatcher dispatcher = getServletContext().getRequestDispatcher("/DCPOHomepage.jsp");
+                    dispatcher.forward(request, response);
+                } else {
+                    RequestDispatcher dispatcher = getServletContext().getRequestDispatcher("/supplierHomepage.jsp");
+                    dispatcher.forward(request, response);
+                }
+
+            } catch (SQLException ex) {
+                Logger.getLogger(Tender.class.getName()).log(Level.SEVERE, null, ex);
+            } finally {
+
+                try {
+                    ps.close();
+                    rs.close();
+                    connection.close();
+                } catch (SQLException ex) {
+                    Logger.getLogger(AllFailedRequisitions.class.getName()).log(Level.SEVERE, null, ex);
+                }
             }
 
-            session.setAttribute("tenders", tenders);
-
-            User user = (User) session.getAttribute("user");
-            
-            if (user.getRole().equals("DCPO")) {
-                RequestDispatcher dispatcher = getServletContext().getRequestDispatcher("/DCPOHomepage.jsp");
-                dispatcher.forward(request, response);
-            } else {
-                RequestDispatcher dispatcher = getServletContext().getRequestDispatcher("/supplierHomepage.jsp");
-                dispatcher.forward(request, response);
-            }
-
-
-        } catch (SQLException ex) {
-            Logger.getLogger(Tender.class.getName()).log(Level.SEVERE, null, ex);
-        }
-            
-            
-        }
-        
-        else
-        {
+        } else {
             response.sendRedirect("login.jsp");
         }
 

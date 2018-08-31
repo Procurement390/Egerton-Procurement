@@ -40,7 +40,7 @@ public class CreateTender extends HttpServlet {
 
         HttpSession session = request.getSession();
 
-        Requisition req = (Requisition)session.getAttribute("req");
+        Requisition req = (Requisition) session.getAttribute("req");
 
         Items item = new Items();
 
@@ -100,12 +100,21 @@ public class CreateTender extends HttpServlet {
 
             request.setAttribute("tenderMessage", createTenderMsg);
             request.setAttribute("message", message);
-            
+
             RequestDispatcher dispatcher = getServletContext().getRequestDispatcher(url);
             dispatcher.forward(request, response);
 
         } catch (SQLException ex) {
             Logger.getLogger(CreateTender.class.getName()).log(Level.SEVERE, null, ex);
+        } finally {
+
+            try {
+                ps.close();
+                rs.close();
+                connection.close();
+            } catch (SQLException ex) {
+                Logger.getLogger(AllFailedRequisitions.class.getName()).log(Level.SEVERE, null, ex);
+            }
         }
 
     }

@@ -63,7 +63,7 @@ public class RequisitionApproval extends HttpServlet {
             while (rs.next()) {
 
                 Items item = new Items();
-                
+
                 item.setItem(rs.getString("item"));
                 item.setDescription(rs.getString("description"));
                 item.setQuantity(rs.getInt("quantity"));

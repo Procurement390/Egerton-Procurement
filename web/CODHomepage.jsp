@@ -24,7 +24,7 @@
     <c:if test="${not empty message}">
         <h3 style="text-align: center" class="alert alert-success"> ${message} </h3>
     </c:if>
-
+        
 </div>   
 
 <c:import url="/include/Footer.jsp" />

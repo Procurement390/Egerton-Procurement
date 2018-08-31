@@ -25,6 +25,7 @@
             <div class="collapse navbar-collapse" id="navcol-1">
                 <ul class="nav navbar-nav navbar-right">
                     <li role="presentation"><a href="#">Welcome ${user.getUsername()} </a></li>
+                    
                     <li class="active" role="presentation"><a href="#">Home </a></li>
                     <li role="presentation"><a href="logout">Logout </a></li>
                 </ul>

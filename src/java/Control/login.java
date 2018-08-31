@@ -43,11 +43,11 @@ public class login extends HttpServlet {
         String url = "";
         String query = "select * from users where username = ? and password = ?";
 
-        try {
+        Connection connection = null;
+        PreparedStatement ps = null;
+        ResultSet rs = null;
 
-            Connection connection = null;
-            PreparedStatement ps = null;
-            ResultSet rs = null;
+        try {
 
             connection = datasource.getConnection();
 
@@ -92,7 +92,7 @@ public class login extends HttpServlet {
                         supplier.setKraCertificate(rs.getString("kracertificate"));
                         supplier.setTaxCompliance(rs.getString("taxcompliance"));
                     }
-                    
+
                     session.setAttribute("supplier", supplier);
                     url = "/tender";
                     break;
@@ -122,6 +122,17 @@ public class login extends HttpServlet {
 
         } catch (SQLException ex) {
             Logger.getLogger(login.class.getName()).log(Level.SEVERE, null, ex);
+        } finally {
+
+            out.close();
+            try {
+                ps.close();
+                rs.close();
+                connection.close();
+            } catch (SQLException ex) {
+                Logger.getLogger(AllFailedRequisitions.class.getName()).log(Level.SEVERE, null, ex);
+            }
+
         }
 
     }

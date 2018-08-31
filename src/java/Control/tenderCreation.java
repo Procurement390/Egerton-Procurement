@@ -81,9 +81,9 @@ public class tenderCreation extends HttpServlet {
             rs = ps.executeQuery();
 
             while (rs.next()) {
-                
+
                 Items item = new Items();
-                
+
                 item.setItem(rs.getString("item"));
                 item.setDescription(rs.getString("description"));
                 item.setQuantity(rs.getInt("quantity"));
@@ -105,6 +105,14 @@ public class tenderCreation extends HttpServlet {
         } finally {
 
             out.close();
+            try {
+                connection.close();
+                ps.close();
+                rs.close();
+
+            } catch (SQLException ex) {
+                Logger.getLogger(Registration.class.getName()).log(Level.SEVERE, null, ex);
+            }
 
         }
     }

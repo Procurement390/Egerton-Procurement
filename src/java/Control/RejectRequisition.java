@@ -19,9 +19,9 @@ import javax.sql.DataSource;
 
 public class RejectRequisition extends HttpServlet {
 
-     @Resource(name="jdbc/Procurement")
-     private DataSource datasource;
-    
+    @Resource(name = "jdbc/Procurement")
+    private DataSource datasource;
+
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
@@ -31,66 +31,58 @@ public class RejectRequisition extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        
-         //set content type
+
+        //set content type
         response.setContentType("text/html");
 
         //print writer
         PrintWriter out = response.getWriter();
-        
+
         String reqId = request.getParameter("reqId");
-        
+
         String message = "";
         String url = "";
-     
+
         Connection connection = null;
         PreparedStatement ps = null;
         ResultSet rs = null;
-        
+
         String query = "update requisition set status = ? where id = ? ";
-        
-        try
-        {
+
+        try {
             connection = datasource.getConnection();
-            
-                      
+
             ps = connection.prepareStatement(query);
             ps.setString(1, "Rejected");
             ps.setString(2, reqId);
-                    
+
             ps.executeUpdate();
-                        
+
             message = "Requisition rejected";
-            
+
             request.setAttribute("message", message);
-        
+
             url = "/tender";
-            
+
             RequestDispatcher dispatcher = getServletContext().getRequestDispatcher(url);
             dispatcher.forward(request, response);
-                
-           
-            
+
         } catch (SQLException ex) {
             Logger.getLogger(Registration.class.getName()).log(Level.SEVERE, null, ex);
             out.print("Connection to the database failed. please try again");
-        }
-        finally
-        {
-            
+        } finally {
+
             out.close();
             try {
                 connection.close();
                 ps.close();
                 rs.close();
-                
+
             } catch (SQLException ex) {
                 Logger.getLogger(Registration.class.getName()).log(Level.SEVERE, null, ex);
             }
-        
+
         }
     }
-        
-    }
 
-
+}

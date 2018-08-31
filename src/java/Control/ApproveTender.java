@@ -21,8 +21,8 @@ public class ApproveTender extends HttpServlet {
     private DataSource datasource;
 
     Connection connection = null;
-    PreparedStatement ps = null;
-    ResultSet rs = null;
+    PreparedStatement ps1 = null;
+    PreparedStatement ps2 = null;
     String message = "";
 
     @Override
@@ -46,11 +46,11 @@ public class ApproveTender extends HttpServlet {
 
             connection = datasource.getConnection();
             
-            PreparedStatement ps1 = connection.prepareStatement(query1);
+            ps1 = connection.prepareStatement(query1);
             ps1.setString(1, "rejected");
             ps1.setString(2, tenderNumber);
 
-            PreparedStatement ps2 = connection.prepareStatement(query2);
+            ps2 = connection.prepareStatement(query2);
             ps2.setString(1, "accepted");
             ps2.setInt(2, ID);
 
@@ -62,6 +62,16 @@ public class ApproveTender extends HttpServlet {
 
         } catch (SQLException ex) {
             Logger.getLogger(ApproveTender.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        finally{
+             try {
+                ps1.close();
+                ps2.close();
+                connection.close();
+            } catch (SQLException ex) {
+                Logger.getLogger(AllFailedRequisitions.class.getName()).log(Level.SEVERE, null, ex);
+            }
+
         }
 
         getServletContext().setAttribute("approveMessage", message);

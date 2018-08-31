@@ -17,10 +17,14 @@
     }
 </style>
 
-<c:choose>
-    <c:when test="${user.getRole() == COD}"> <c:import url="/include/sideBar3.jsp" /> </c:when>
-    <c:otherwise> <c:import url="/include/sideBar2.jsp" /> </c:otherwise>
-</c:choose>
+<c:set var="role" scope="session" value="${user.getRole()}" />
+<c:if test="${role == 'DCPO'}">
+    <c:import url="/include/sideBar2.jsp" />
+</c:if>
+
+<c:if test="${role == 'COD'}">
+    <c:import url="/include/sideBar3.jsp" />
+</c:if>   
 
 <div class="container" id="mainbody">
 
@@ -38,7 +42,7 @@
             </thead>
             <tbody>
                 <c:choose>
-                    <c:when test="${empty requisition}"> <tr><td> No item added</td> </tr> </c:when>
+                    <c:when test="${empty requisition}"> <h4 class="alert alert-info text-center"> No Failed Requisition </h4> </c:when>
                     <c:otherwise>
                         <c:forEach var="req" items="${requisition}" >
                             <tr>

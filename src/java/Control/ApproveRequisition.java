@@ -46,14 +46,11 @@ public class ApproveRequisition extends HttpServlet {
 
         String reqId = request.getParameter("reqId");
 
-        Items item = new Items();
-
         String message = "";
         String url = "";
 
         Connection connection = null;
         PreparedStatement ps = null;
-        ResultSet rs = null;
 
         String query = "update requisition set status = ? where id = ? ";
 
@@ -82,6 +79,13 @@ public class ApproveRequisition extends HttpServlet {
         } finally {
 
             out.close();
+             try {
+                ps.close();
+                connection.close();
+            } catch (SQLException ex) {
+                Logger.getLogger(AllFailedRequisitions.class.getName()).log(Level.SEVERE, null, ex);
+            }
+
             
         }
     }
